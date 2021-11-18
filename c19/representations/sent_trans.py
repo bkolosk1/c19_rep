@@ -12,6 +12,12 @@ class BERTTransformer():
         self._model = None
 
     def fit(self, texts, model_name='distilbert-base-nli-mean-tokens'):
+        """Fits the Sentence Transformers representation for a given model.
+
+        Args:
+            texts ([str]): Textual data to be transformed to numerical representation.
+            model_name (str, optional): Sentence-Transfomer model to be used from here https://www.sbert.net/docs/pretrained_models.html . Defaults to 'distilbert-base-nli-mean-tokens'.
+        """
         self._model = SentenceTransformer(model_name)
 
     def transform(self, texts):
