@@ -27,9 +27,8 @@ def run():
     ]
     y_test = [1, 0, 1]
 
-    for (name, representation) in [("statistical", Stat), ("SVD", SVD),
-                                   ("sentence_transformers", BERTTransformer)]:
-        representation = representation()
+    for (name, representation) in [("statistical", Stat()), ("SVD", SVD(nfeats=10000,dims=512)),
+                                   ("sentence_transformers", BERTTransformer())]:
         train_representation = representation.fit_transform(X_train)
         test_representation = representation.transform(X_test)
         clf = LogisticRegression(random_state=0).fit(train_representation,

@@ -8,15 +8,19 @@ from sentence_transformers import SentenceTransformer
 
 
 class BERTTransformer():
-    def __init__(self):
-        self._model = None
+    def __init__(self, model='distilbert-base-nli-mean-tokens'):
+        """Inits the model.
+
+        Args:
+            model (str, optional):  Sentence-Transfomer model to be used from here https://www.sbert.net/docs/pretrained_models.html . Defaults to 'distilbert-base-nli-mean-tokens'. Defaults to 'distilbert-base-nli-mean-tokens'.
+        """
+        self._model = model
 
     def fit(self, texts, model_name='distilbert-base-nli-mean-tokens'):
         """Fits the Sentence Transformers representation for a given model.
 
         Args:
             texts ([str]): Textual data to be transformed to numerical representation.
-            model_name (str, optional): Sentence-Transfomer model to be used from here https://www.sbert.net/docs/pretrained_models.html . Defaults to 'distilbert-base-nli-mean-tokens'.
         """
         self._model = SentenceTransformer(model_name)
 
@@ -25,7 +29,6 @@ class BERTTransformer():
         return X
 
     def fit_transform(self,
-                      texts,
-                      model_name='distilbert-base-nli-mean-tokens'):
-        self.fit(texts, model_name=model_name)
+                      texts):
+        self.fit(texts)
         return self.transform(texts)
