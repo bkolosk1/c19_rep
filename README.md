@@ -1,4 +1,31 @@
-# c19_rep
+
+# COVID19 representations
+
+
+## INSTALLATION
+
+The package can be installed via pip: 
+
+```
+pip3 install c19_rep
+```
+And that's it. You can also install the library directly:
+
+```
+python3 setup.py install
+```
+
+Note that some of the representations use nltk addons.
+
+```
+import nltk
+nltk.download('punct')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
+```
+
+## USAGE
+
 
 ```python
 
