@@ -1,6 +1,8 @@
-from setuptools import setup, find_packages
-import os
+"""
+    Prepares the package for pypi.
+"""
 from pathlib import Path
+from setuptools import setup, find_packages
 
 this_directory = Path(__file__).parent
 
