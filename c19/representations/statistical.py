@@ -6,6 +6,8 @@ from string import punctuation
 
 class Stat():
     def __init__(self):
+        """[summary]
+        """
         pass
 
     def fit(self, texts, normalize=True):

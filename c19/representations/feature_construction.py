@@ -1,9 +1,11 @@
 """
 Evolution of AutoBOT. Skrlj 2019
 """
-
-from nltk import pos_tag
+import string
+import re
+import logging
 import multiprocessing as mp
+from nltk import pos_tag
 from nltk.corpus import stopwords
 from nltk import word_tokenize, pos_tag
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -11,10 +13,7 @@ from sklearn.preprocessing import MinMaxScaler, Normalizer
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
-import string
-import re
 import numpy as np
-import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s',
                     datefmt='%d-%b-%y %H:%M:%S')
@@ -197,7 +196,7 @@ class FeaturePrunner:
         pass
 
 
-def get_features(df_data, max_num_feat=1000, labels=None):
+def get_features(df_data, max_num_feat=1000):
     """
     Method that computes various TF-IDF-alike features.
     """
@@ -228,8 +227,8 @@ def get_features(df_data, max_num_feat=1000, labels=None):
         data_matrix = matrix.fit_transform(df_data)
         tokenizer = matrix
 
-    except Exception as es:
-        print(es, "Feature construction error.")
+    except Exception as e_s:
+        print(e_s, "Feature construction error.")
         tokenizer = None
 
     return tokenizer, feature_names, data_matrix
