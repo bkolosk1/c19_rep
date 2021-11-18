@@ -1,13 +1,13 @@
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import f1_score
 from c19 import representations
 from c19.representations.factorization import SVD
 from c19.representations.statistical import Stat
 from c19.representations.sent_trans import BERTTransformer
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import f1_score
 
 
 def run():
-    X_train = [
+    x_train = [
         "The CDC currently reports 99031 deaths. In general the discrepancies in death counts between different sources are small and explicable. The death toll stands at roughly 100000 people today.",
         "States reported 1121 deaths a small rise from last Tuesday. Southern states reported 640 of those deaths. https://t.co/YASGRTT4ux",
         "Politically Correct Woman (Almost) Uses Pandemic as Excuse Not to Reuse Plastic Bag https://t.co/thF8GuNFPe #coronavirus #nashville",
@@ -20,17 +20,18 @@ def run():
         "Retraction—Hydroxychloroquine or chloroquine with or without a macrolide for treatment of COVID-19: a multinational registry analysis - The Lancet https://t.co/L5V2x6G9or"
     ]
     y_train = [1, 1, 0, 1, 1, 1, 1, 0, 0, 0]
-    X_test = [
+    x_test = [
         "Take simple daily precautions to help prevent the spread of respiratory illnesses like #COVID19. Learn how to protect yourself from coronavirus (COVID-19): https://t.co/uArGZTrH5L. https://t.co/biZTxtUKyK",
         "The NBA is poised to restart this month. In March we reported on how the Utah Jazz got 58 coronavirus tests in a matter of hours at a time when U.S. testing was sluggish. https://t.co/I8YjjrNoTh https://t.co/o0Nk6gpyos",
         "We just announced that the first participants in each age cohort have been dosed in the Phase 2 study of our mRNA vaccine (mRNA-1273) against novel coronavirus. Read more: https://t.co/woPlKz1bZC #mRNA https://t.co/9VGUoJu5cS"
     ]
     y_test = [1, 0, 1]
 
-    for (name, representation) in [("statistical", Stat()), ("SVD", SVD(nfeats=10000,dims=512)),
+    for (name, representation) in [("statistical", Stat()), 
+                                   ("SVD", SVD(nfeats=10000,dims=512)),
                                    ("sentence_transformers", BERTTransformer())]:
-        train_representation = representation.fit_transform(X_train)
-        test_representation = representation.transform(X_test)
+        train_representation = representation.fit_transform(x_train)
+        test_representation = representation.transform(x_test)
         clf = LogisticRegression(random_state=0).fit(train_representation,
                                                      y_train)
         test_predict = clf.predict(test_representation)
