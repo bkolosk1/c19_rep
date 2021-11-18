@@ -9,13 +9,20 @@ class SVD():
         self.tokenizer = None
         self.reducer = None
 
-    def fit(self, texts, nfeats=10000, dims=512):
+    def fit(self, texts, nfeats, dims):
+        """Fits the SVD representation from nfeats to dims.
+
+        Args:
+            texts ([str]): Textual data to be transformed to numerical representation.
+            nfeats (int, optional): Number of n-gram features both character and word. Defaults to 10000.
+            dims (int, optional): Dimension of final factorized space.
+        """
         dataframe = build_dataframe(texts)
         tokenizer, feature_names, _ = get_features(dataframe,
                                                    max_num_feat=nfeats)
         reducer = TruncatedSVD(
-            n_components=min(dims,
-                             nfeats * len(feature_names) - 1))
+            n_components=min(dims, 
+            nfeats * len(feature_names) - 1))
         self.tokenizer = tokenizer
         data_matrix = self.tokenizer.transform(dataframe)
         self.reducer = reducer.fit(data_matrix)
@@ -31,30 +38,3 @@ class SVD():
         self.fit(texts, nfeats=nfeats, dims=dims)
         return self.transform(texts)
 
-
-class SVD():
-    def __init__(self):
-        self.tokenizer = None
-        self.reducer = None
-
-    def fit(self, texts, nfeats=10000, dims=512):
-        dataframe = build_dataframe(texts)
-        tokenizer, feature_names, _ = get_features(dataframe,
-                                                   max_num_feat=nfeats)
-        reducer = TruncatedSVD(
-            n_components=min(dims,
-                             nfeats * len(feature_names) - 1))
-        self.tokenizer = tokenizer
-        data_matrix = self.tokenizer.transform(dataframe)
-        self.reducer = reducer.fit(data_matrix)
-
-    def transform(self, texts):
-        dataframe = build_dataframe(texts)
-        data_matrix = self.tokenizer.transform(dataframe)
-        reduced_matrix = self.reducer.transform(data_matrix)
-        return reduced_matrix
-
-    def fit_transform(self, texts, nfeats=10000, dims=512):
-        dataframe = build_dataframe(texts)
-        self.fit(texts, nfeats=nfeats, dims=dims)
-        return self.transform(texts)

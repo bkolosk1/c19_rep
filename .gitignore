@@ -1,4 +1,5 @@
-__pycache__/
+ __pycache__/
+ *.pyc
 c19/__pycache__/__init__.cpython-38.pyc
 c19/representations/__pycache__/__init__.cpython-38.pyc
 c19/representations/__pycache__/factorization.cpython-38.pyc
@@ -20,5 +21,3 @@ build/lib/c19/representations/feature_construction.py
 build/lib/c19/representations/sent_trans.py
 build/lib/c19/representations/sentence_transformers.py
 build/lib/c19/representations/statistical.py
-
-
