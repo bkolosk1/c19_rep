@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 from sklearn import preprocessing
 from nltk import word_tokenize
 from string import punctuation

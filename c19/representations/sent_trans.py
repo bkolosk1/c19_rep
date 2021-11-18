@@ -1,9 +1,4 @@
 from sklearn import preprocessing
-import pandas as pd
-import numpy as np
-import os
-from nltk import word_tokenize
-from string import punctuation
 from sentence_transformers import SentenceTransformer
 
 
@@ -16,13 +11,13 @@ class BERTTransformer():
         """
         self._model = model
 
-    def fit(self, texts, model_name='distilbert-base-nli-mean-tokens'):
+    def fit(self, texts):
         """Fits the Sentence Transformers representation for a given model.
 
         Args:
             texts ([str]): Textual data to be transformed to numerical representation.
         """
-        self._model = SentenceTransformer(model_name)
+        self._model = SentenceTransformer(self._model)
 
     def transform(self, texts):
         X = self._model.encode(texts)
