@@ -20,8 +20,6 @@ from nltk import word_tokenize, pos_tag
 from nltk.corpus import stopwords
 import multiprocessing as mp
 from nltk import pos_tag
-
-
 np.random.seed(42)
 
 
