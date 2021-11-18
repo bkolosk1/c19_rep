@@ -50,7 +50,7 @@ from sklearn.preprocessing import MaxAbsScaler, Normalizer
 from sklearn import preprocessing
 import numpy
 
-numpy.random.seed()
+numpy.random.seed(42)
 from sklearn.feature_extraction.text import HashingVectorizer
 
 
@@ -129,8 +129,6 @@ def get_pos_tags(text):
     """
     This method yields pos tags
     """
-    #tokenizer = TweetTokenizer()
-    #tokens = tokenizer.tokenize(text)
     tokens = nltk.word_tokenize(text)
     tgx = " ".join([x[1] for x in pos_tag(tokens)])
     return tgx
@@ -239,9 +237,6 @@ def get_features(df_data, max_num_feat=1000, labels=None):
                                          ngram_range=(2, 3),
                                          max_features=max_num_feat)
 
-    hashing_vec = HashingVectorizer(n_features=max_num_feat)
-    #  ('hash', pipeline.Pipeline([('s3', text_col(key='no_stopwords')), ('hash_tfidf', hashing_vec)]))
-    #    rex = KeywordFeatures(targets = labels)
     symbolic_features = [
         ('word',
          pipeline.Pipeline([('s1', text_col(key='no_stopwords')),
@@ -264,7 +259,6 @@ def get_features(df_data, max_num_feat=1000, labels=None):
                                               n_jobs=8)),
                                 ('normalize', Normalizer())])
 
-    #print(matrix.fit_transform(df_data))
     try:
         data_matrix = matrix.fit_transform(df_data)
         tokenizer = matrix
