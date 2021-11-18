@@ -1,13 +1,18 @@
-import numpy as np
-from .feature_construction import get_features, build_dataframe
+"""
+    Factorizaiton representations
+"""
 from sklearn.decomposition import TruncatedSVD
+from .feature_construction import get_features, build_dataframe
 
 
 class SVD():
+    """[summary]
+    """
     def __init__(self, nfeats, dims):
         """Initializes the representation
         Args:
-            nfeats (int, optional): Number of n-gram features both character and word. Defaults to 10000.
+            nfeats (int, optional): Number of n-gram features both character and word.
+            Defaults to 10000.
             dims (int, optional): Dimension of final factorized space.
             """
         self.tokenizer = None
@@ -32,12 +37,27 @@ class SVD():
         self.reducer = reducer.fit(data_matrix)
 
     def transform(self, texts):
+        """[summary]
+
+        Args:
+            texts ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
         dataframe = build_dataframe(texts)
         data_matrix = self.tokenizer.transform(dataframe)
         reduced_matrix = self.reducer.transform(data_matrix)
         return reduced_matrix
 
     def fit_transform(self, texts):
-        dataframe = build_dataframe(texts)
+        """[summary]
+
+        Args:
+            texts ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
         self.fit(texts)
         return self.transform(texts)
