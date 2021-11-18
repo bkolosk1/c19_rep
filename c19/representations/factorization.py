@@ -25,8 +25,8 @@ class SVD():
         tokenizer, feature_names, _ = get_features(dataframe,
                                                    max_num_feat=self.nfeats)
         reducer = TruncatedSVD(
-            n_components=min(self.dims, 
-            self.nfeats * len(feature_names) - 1))
+            n_components=min(self.dims,
+                             self.nfeats * len(feature_names) - 1))
         self.tokenizer = tokenizer
         data_matrix = self.tokenizer.transform(dataframe)
         self.reducer = reducer.fit(data_matrix)
@@ -41,4 +41,3 @@ class SVD():
         dataframe = build_dataframe(texts)
         self.fit(texts)
         return self.transform(texts)
-

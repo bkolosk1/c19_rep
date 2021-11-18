@@ -2,24 +2,24 @@
 Evolution of AutoBOT. Skrlj 2019
 """
 
+from nltk import pos_tag
+import multiprocessing as mp
+from nltk.corpus import stopwords
+from nltk import word_tokenize, pos_tag
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.preprocessing import MinMaxScaler, Normalizer
+from sklearn.pipeline import FeatureUnion, Pipeline
+from sklearn.base import BaseEstimator, TransformerMixin
+import pandas as pd
+import string
+import re
+import numpy as np
 import logging
 
 logging.basicConfig(format='%(asctime)s - %(message)s',
                     datefmt='%d-%b-%y %H:%M:%S')
 logging.getLogger().setLevel(logging.INFO)
 
-import numpy as np
-import re
-import string
-import pandas as pd
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.pipeline import FeatureUnion, Pipeline
-from sklearn.preprocessing import  MinMaxScaler, Normalizer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from nltk import word_tokenize, pos_tag
-from nltk.corpus import stopwords
-import multiprocessing as mp
-from nltk import pos_tag
 np.random.seed(42)
 
 
@@ -114,6 +114,7 @@ class text_col(BaseEstimator, TransformerMixin):
     """
     A helper processor class
     """
+
     def __init__(self, key):
         self.key = key
 
@@ -124,11 +125,12 @@ class text_col(BaseEstimator, TransformerMixin):
         return data_dict[self.key]
 
 
-#fit and transform numeric features, used in scikit Feature union
+# fit and transform numeric features, used in scikit Feature union
 class digit_col(BaseEstimator, TransformerMixin):
     """
     Dealing with numeric features
     """
+
     def fit(self, x, y=None):
         return self
 
@@ -178,6 +180,7 @@ class FeaturePrunner:
     """
     Core class describing sentence embedding methodology employed here.
     """
+
     def __init__(self, max_num_feat=2048):
 
         self.max_num_feat = max_num_feat
@@ -209,18 +212,17 @@ def get_features(df_data, max_num_feat=1000, labels=None):
     features = [
         ('word',
          Pipeline([('s1', text_col(key='no_stopwords')),
-                            ('word_tfidf', tfidf_word_unigram)])),
+                   ('word_tfidf', tfidf_word_unigram)])),
         ('char',
          Pipeline([('s2', text_col(key='no_stopwords')),
-                            ('char_tfidf', tfidf_char_unigram)]))
+                   ('char_tfidf', tfidf_char_unigram)]))
     ]
-
 
     feature_names = [x[0] for x in features]
     matrix = Pipeline([('union',
-                                 FeatureUnion(transformer_list=features,
-                                              n_jobs=8)),
-                                ('normalize', Normalizer())])
+                        FeatureUnion(transformer_list=features,
+                                     n_jobs=8)),
+                       ('normalize', Normalizer())])
 
     try:
         data_matrix = matrix.fit_transform(df_data)
