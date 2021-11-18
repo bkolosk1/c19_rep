@@ -5,7 +5,7 @@ this_directory = Path(__file__).parent
 
 VERSION = '0.0.4'
 DESCRIPTION = 'Representations used in COVID19 detection paper.'
-LONG_DESCRIPTION = long_description = (this_directory / "./c19/README.md").read_text()
+LONG_DESCRIPTION = long_description = (this_directory / "README.md").read_text()
 
 # Setting up
 setup(
