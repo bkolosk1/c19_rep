@@ -51,7 +51,7 @@ def remove_mentions(text, replace_token):
     return re.sub(r'(?:@[\w_]+)', replace_token, text)
 
 
-def remove_hashtags(text, replace_token):
+def remove_hashtags(text, replace_token = "HASH"):
     """
     This method removes hashtags
     """
@@ -59,7 +59,7 @@ def remove_hashtags(text, replace_token):
     return re.sub(r"(?:\#+[\w_]+[\w\'_\-]*[\w_]+)", replace_token, text)
 
 
-def remove_url(text, replace_token):
+def remove_url(text, replace_token = "URL"):
     """
     Removal of URLs
     """
@@ -144,10 +144,8 @@ def parallelize(data, method):
 
     cores = mp.cpu_count()
     data_split = np.array_split(data, cores)
-    pool = mp.Pool(cores)
-    data = pd.concat(pool.map(method, data_split))
-    pool.close()
-    pool.join()
+    with mp.Pool(cores) as pool:
+        data = pd.concat(pool.map(method, data_split))
     return data
 
 
