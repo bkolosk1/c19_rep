@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -r $(find . -name "requirments.txt" )
+        echo $(find . -name "requirments.txt" )
         pip install flake8
     - name: Lint with flake8
       run: |

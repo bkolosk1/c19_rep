@@ -51,7 +51,7 @@ def remove_mentions(text, replace_token):
     return re.sub(r'(?:@[\w_]+)', replace_token, text)
 
 
-def remove_URL(text):
+def remove_url(text):
     """
     This method removes mentions (relevant for tweets)
     """
@@ -59,7 +59,7 @@ def remove_URL(text):
     return re.sub(r'#URL#', '', text)
 
 
-def remove_HASH(text):
+def remove_hash(text):
     """
     This method removes mentions (relevant for tweets)
     """
@@ -165,8 +165,8 @@ def build_dataframe(data_docs):
     df_data = pd.DataFrame({'text': data_docs})
     df_data['no_punctuation'] = df_data['text'].map(
         lambda x: remove_punctuation(x))
-    df_data['no_url'] = df_data['no_punctuation'].map(lambda x: remove_URL(x))
-    df_data['no_hash'] = df_data['no_url'].map(lambda x: remove_HASH(x))
+    df_data['no_url'] = df_data['no_punctuation'].map(lambda x: remove_url(x))
+    df_data['no_hash'] = df_data['no_url'].map(lambda x: remove_hashtags(x))
     df_data['no_stopwords'] = df_data['no_hash'].map(
         lambda x: remove_stopwords(x))
     df_data['text_clean'] = df_data['text']
