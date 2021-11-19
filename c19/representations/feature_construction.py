@@ -5,11 +5,11 @@ import string
 import re
 import logging
 import multiprocessing as mp
-from nltk import pos_tag
 from nltk.corpus import stopwords
 from nltk import word_tokenize, pos_tag
+from nltk.sem.logic import TypeException
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.preprocessing import MinMaxScaler, Normalizer
+from sklearn.preprocessing import Normalizer
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
@@ -51,22 +51,6 @@ def remove_mentions(text, replace_token):
     return re.sub(r'(?:@[\w_]+)', replace_token, text)
 
 
-def remove_url(text):
-    """
-    This method removes mentions (relevant for tweets)
-    """
-
-    return re.sub(r'#URL#', '', text)
-
-
-def remove_hash(text):
-    """
-    This method removes mentions (relevant for tweets)
-    """
-
-    return re.sub(r'#HASHTAG#', '', text)
-
-
 def remove_hashtags(text, replace_token):
     """
     This method removes hashtags
@@ -80,7 +64,7 @@ def remove_url(text, replace_token):
     Removal of URLs
     """
 
-    regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+    regex = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
     return re.sub(regex, replace_token, text)
 
 
@@ -103,44 +87,54 @@ def get_pos_tags(text):
 
 
 def ttr(text):
+    """Trim text
+
+    Args:
+        text (str): Text to be trimmed.
+
+    Returns:
+        [type]: trim size
+    """
     if len(text.split(" ")) > 1 and len(text.split()) > 0:
         return len(set(text.split())) / len(text.split())
-    else:
-        return 0
+    return 0
 
 
-class text_col(BaseEstimator, TransformerMixin):
+class TextCol(BaseEstimator, TransformerMixin):
     """
     A helper processor class
     """
 
     def __init__(self, key):
+        """[summary]
+
+        Args:
+            key ([type]): [description]
+        """
         self.key = key
 
-    def fit(self, x, y=None):
+    def fit(self, _, __=None):
+        """[summary]
+
+        Args:
+            _ ([type]): [description]
+            __ ([type], optional): [description]. Defaults to None.
+
+        Returns:
+            [type]: [description]
+        """
         return self
 
     def transform(self, data_dict):
+        """[summary]
+
+        Args:
+            data_dict ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
         return data_dict[self.key]
-
-
-# fit and transform numeric features, used in scikit Feature union
-class digit_col(BaseEstimator, TransformerMixin):
-    """
-    Dealing with numeric features
-    """
-
-    def fit(self, x, y=None):
-        return self
-
-    def transform(self, hd_searches):
-        d_col_drops = [
-            'text', 'no_punctuation', 'no_stopwords', 'text_clean', 'affixes',
-            'pos_tag_seq'
-        ]
-        hd_searches = hd_searches.drop(d_col_drops, axis=1).values
-        scaler = MinMaxScaler().fit(hd_searches)
-        return scaler.transform(hd_searches)
 
 
 def parallelize(data, method):
@@ -163,37 +157,14 @@ def build_dataframe(data_docs):
     """
 
     df_data = pd.DataFrame({'text': data_docs})
-    df_data['no_punctuation'] = df_data['text'].map(
-        lambda x: remove_punctuation(x))
-    df_data['no_url'] = df_data['no_punctuation'].map(lambda x: remove_url(x))
-    df_data['no_hash'] = df_data['no_url'].map(lambda x: remove_hashtags(x))
-    df_data['no_stopwords'] = df_data['no_hash'].map(
-        lambda x: remove_stopwords(x))
+    df_data['no_punctuation'] = df_data['text'].apply(remove_punctuation)
+    df_data['no_url'] = df_data['no_punctuation'].apply(remove_url)
+    df_data['no_hash'] = df_data['no_url'].apply(remove_hashtags)
+    df_data['no_stopwords'] = df_data['no_hash'].apply(remove_stopwords)
     df_data['text_clean'] = df_data['text']
-    df_data['pos_tag_seq'] = df_data['text_clean'].map(
-        lambda x: get_pos_tags(x))
+    df_data['pos_tag_seq'] = df_data['text_clean'].apply(get_pos_tags)
     return df_data
 
-
-class FeaturePrunner:
-    """
-    Core class describing sentence embedding methodology employed here.
-    """
-
-    def __init__(self, max_num_feat=2048):
-
-        self.max_num_feat = max_num_feat
-
-    def fit(self, input_data, y=None):
-
-        return self
-
-    def transform(self, input_data):
-        return input_data
-
-    def get_feature_names(self):
-
-        pass
 
 
 def get_features(df_data, max_num_feat=1000):
@@ -210,10 +181,10 @@ def get_features(df_data, max_num_feat=1000):
 
     features = [
         ('word',
-         Pipeline([('s1', text_col(key='no_stopwords')),
+         Pipeline([('s1', TextCol(key='no_stopwords')),
                    ('word_tfidf', tfidf_word_unigram)])),
         ('char',
-         Pipeline([('s2', text_col(key='no_stopwords')),
+         Pipeline([('s2', TextCol(key='no_stopwords')),
                    ('char_tfidf', tfidf_char_unigram)]))
     ]
 
@@ -227,7 +198,7 @@ def get_features(df_data, max_num_feat=1000):
         data_matrix = matrix.fit_transform(df_data)
         tokenizer = matrix
 
-    except Exception as e_s:
+    except TypeException as e_s:
         print(e_s, "Feature construction error.")
         tokenizer = None
 
