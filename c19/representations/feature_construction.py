@@ -1,5 +1,5 @@
 """
-Evolution of AutoBOT. Skrlj 2019
+Preprocessing and feature construction for the SVD.
 """
 import string
 import re
