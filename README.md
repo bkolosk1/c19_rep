@@ -2,7 +2,7 @@
 # COVID19 representations
 
 
-## INSTALLATION
+## Installation
 
 The package can be installed via pip: 
 
@@ -24,7 +24,7 @@ nltk.download('stopwords')
 nltk.download('averaged_perceptron_tagger')
 ```
 
-## USAGE
+## Usage
 
 
 ```python
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 ```
 
 
-In order to GridSearch the *SVD* representation
+In order to GridSearch the *SVD* representation space
 ```python
 
 for features in [10**3,25*10**2,5*10**3,10**4]:
