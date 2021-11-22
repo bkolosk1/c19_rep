@@ -69,3 +69,28 @@ for features in [10**3,25*10**2,5*10**3,10**4]:
 
 
 ```
+
+
+# Citation
+```
+@InProceedings{10.1007/978-3-030-73696-5_17,
+author="Koloski, Boshko
+and Stepi{\v{s}}nik-Perdih, Timen
+and Pollak, Senja
+and {\v{S}}krlj, Bla{\v{z}}",
+editor="Chakraborty, Tanmoy
+and Shu, Kai
+and Bernard, H. Russell
+and Liu, Huan
+and Akhtar, Md Shad",
+title="Identification of COVID-19 Related Fake News via Neural Stacking",
+booktitle="Combating Online Hostile Posts in Regional Languages during Emergency Situation",
+year="2021",
+publisher="Springer International Publishing",
+address="Cham",
+pages="177--188",
+abstract="Identification of Fake News plays a prominent role in the ongoing pandemic, impacting multiple aspects of day-to-day life. In this work we present a solution to the shared task titled COVID19 Fake News Detection in English, scoring the 50th place amongst 168 submissions. The solution was within 1.5{\%} of the best performing solution. The proposed solution employs a heterogeneous representation ensemble, adapted for the classification task via an additional neural classification head comprised of multiple hidden layers. The paper consists of detailed ablation studies further displaying the proposed method's behavior and possible implications. The solution is freely available.",
+isbn="978-3-030-73696-5"
+}
+```
+
