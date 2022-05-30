@@ -7,7 +7,7 @@
 The package can be installed via pip: 
 
 ```
-pip3 install c19_rep
+pip3 install c19rep
 ```
 And that's it. You can also install the library directly:
 
