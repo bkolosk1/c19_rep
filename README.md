@@ -1,6 +1,6 @@
 
 # COVID19 representations
-
+[![Pylint](https://github.com/bkolosk1/c19_rep/actions/workflows/main.yml/badge.svg)](https://github.com/bkolosk1/c19_rep/actions/workflows/main.yml)
 
 ## Installation
 
