@@ -1,7 +1,7 @@
 
 # COVID19 representations
 [![Pylint](https://github.com/bkolosk1/c19_rep/actions/workflows/main.yml/badge.svg)](https://github.com/bkolosk1/c19_rep/actions/workflows/main.yml)
-
+[![Pylint, v2](https://github.com/bkolosk1/c19_rep/actions/workflows/pylint.yml/badge.svg)](https://github.com/bkolosk1/c19_rep/actions/workflows/pylint.yml)
 ## Installation
 
 The package can be installed via pip: 
